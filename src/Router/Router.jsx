@@ -11,7 +11,7 @@ export const router = createBrowserRouter([
     {
         path:'/',
         Component: RootLayout,
-        errorElement: ErrorPage,
+        // errorElement: ErrorPage,
         children:[
             {
                 path:'/',
@@ -27,14 +27,14 @@ export const router = createBrowserRouter([
     {
         path:'/',
         Component: AuthLayout,
-        errorElement: ErrorPage,
+        // errorElement: ErrorPage,
         children:[
             {
-                path: '/login',
+                path:'login',
                 Component: Login
             },
             {
-                path: '/login',
+                path:'signup',
                 Component: SignUp
             },
         ]

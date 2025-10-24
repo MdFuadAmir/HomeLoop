@@ -76,7 +76,7 @@ const Navbar = () => {
             </li>
             {
               user ? <li>
-                <Link onClick={handleLogout} className="text-red-500">
+                <Link onClick={handleLogout} className="text-red-500 flex items-center gap-2">
                   <FaSignOutAlt /> LogOut
                 </Link>
               </li> : 
