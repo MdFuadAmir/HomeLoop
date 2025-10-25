@@ -1,35 +1,42 @@
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Loading from "../../Components/Loading/Loading";
+import { Link } from "react-router";
+import useAxios from "../../Hooks/useAxios";
 
 const Rooms = () => {
-  const axiosSecure = useAxiosSecure();
-
+  const axiosInstance = useAxios();
   const { data: rooms = [], isLoading } = useQuery({
     queryKey: ["rooms"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/rooms");
+      const res = await axiosInstance.get("/rooms");
       console.log(res.data);
       return res.data;
     },
   });
-
   if (isLoading) {
     return <Loading />;
   }
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+    <div>
+      <h1 className="text-xl font-bold p-4">Availabal Rooms</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
       {rooms.map((room) => (
-        <div key={room._id} className="card bg-base-100 shadow-xl">
-          <div className="card-body">
-            <h2 className="card-title">{room.location}</h2>
-            <p>Hosted by: {room.description}</p>
-            <p>Hosted by: {room.title}</p>
+        <Link key={room._id} to={`/rooms/${room._id}`}>
+          <div className="border border-teal-400 hover:shadow-xl rounded-xl space-y-2 bg-gray-50">
+            <img src={room?.image} alt="" className="h-52 w-full rounded-xl" />
+            <div className="p-2 space-y-2 ">
+              <h2 className="font-bold text-lg text-gray-700">{room.location}</h2>
+              <p className="text-gray-500">
+                {room.to} to {room.from}
+              </p>
+              <p className="text-amber-500">${room.price} / night</p>
+            </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
+    </div>
+
   );
 };
 

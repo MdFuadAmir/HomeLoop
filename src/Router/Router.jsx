@@ -6,6 +6,7 @@ import AuthLayout from "../Layouts/AuthLayout/AuthLayout";
 import Login from "../Authentication/Login/Login";
 import SignUp from "../Authentication/SignUp/SignUp";
 import Forbidden from "../Components/Forbidden/Forbidden";
+import RoomDetails from "../Pages/Rooms/RoomDetails";
 
 export const router = createBrowserRouter([
     {
@@ -16,6 +17,10 @@ export const router = createBrowserRouter([
             {
                 path:'/',
                 element:<Home />
+            },
+            {
+                path:'/rooms/:id',
+                element:<RoomDetails />
             },
             {
                 path:'/forbidden',

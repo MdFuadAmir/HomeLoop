@@ -22,7 +22,7 @@ const Navbar = () => {
     </>
   );
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar bg-teal-800 px-4 md:px-10 lg:px-20">
       {/* navber start */}
       <div className="navbar-start">
         <div className="dropdown">
@@ -45,7 +45,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex="-1"
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow text-white"
           >
             {navLinks}
           </ul>
@@ -54,7 +54,7 @@ const Navbar = () => {
       </div>
       {/* navbar center */}
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">{navLinks}</ul>
+        <ul className="menu menu-horizontal px-1 text-white">{navLinks}</ul>
       </div>
       {/* navbar end */}
       <div className="navbar-end">
