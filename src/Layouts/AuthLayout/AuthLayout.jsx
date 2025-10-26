@@ -3,7 +3,7 @@ import HouseLoop from "../../Components/HouseLoop/HouseLoop";
 
 const AuthLayout = () => {
     return (
-        <div className="h-full p-4 bg-teal-700">
+        <div className="h-full p-4 bg-teal-700 max-w-[2520px] mx-auto px-4 md:px-10 lg:px-20">
             <div className="p-2 w-fit bg-teal-200 rounded">
             <HouseLoop/>
             </div>

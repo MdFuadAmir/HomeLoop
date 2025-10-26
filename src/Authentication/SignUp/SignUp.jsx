@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocilaLogin from "../SocialLogin/SocialLogin";
 import useAuth from "../../Hooks/useAuth";
-import Swal from "sweetalert2";
+import useAxios from "../../Hooks/useAxios";
+import { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const {
@@ -10,21 +13,57 @@ const SignUp = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { creatUser } = useAuth();
+  const { creatUser, updateUserProfile } = useAuth();
+    const location = useLocation();
+  const from = location?.state || '/'
   const navigate = useNavigate();
+  const axiosInstance = useAxios();
+  const [profileImage, setProfileImage] = useState();
+  const [upLoading, setUpLoading] = useState(false);
+
+  const handleImageUploade = async (e) => {
+    const image = e.target.files[0];
+    if (!image) return;
+    setUpLoading(true);
+    const formData = new FormData();
+    formData.append("image", image);
+    const imageUploadUrl = `https://api.imgbb.com/1/upload?expiration=600&key=${
+      import.meta.env.VITE_image_upload_key
+    }`;
+    const res = await axios.post(imageUploadUrl, formData);
+    setProfileImage(res.data.data.display_url);
+    setUpLoading(false);
+  };
 
   const onSubmit = (data) => {
     creatUser(data.email, data.password)
-      .then((result) => {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Your Account has been created",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate('/')
-        console.log(result.user);
+      .then(async (result) => {
+        const user = result.user;
+        const userInfo = {
+          email: user.email,
+          role: "user",
+          createdAt: new Date().toISOString(),
+          last_log_in: new Date().toISOString(),
+        };
+        const userRes = await axiosInstance.post("/users", userInfo);
+        if (userRes.data.success && userRes.data.insertedId) {
+          console.log("new user add to database");
+          toast.success('Your Account has been created')
+        } else {
+          console.log("User already exists");
+          toast.success('User already exists')
+        }
+        const userProfile = {
+          displayName: data?.username,
+          photoURL: profileImage,
+        };
+        updateUserProfile(userProfile)
+          .then(() => {
+            navigate(from);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -40,21 +79,29 @@ const SignUp = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Profile Picture */}
-          <div>
-            <label className="text-white text-sm font-semibold mb-1 block">
-              Profile Picture URL
-            </label>
-            <input
-              {...register("profilePic", { required: true })}
-              type="text"
-              placeholder="Enter profile image URL"
-              className="w-full px-4 py-3 rounded-lg bg-white/15 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-amber-400"
-            />
-            {errors.profilePic && (
-              <p className="text-red-400 text-sm mt-1">
-                Profile picture is required
-              </p>
-            )}
+          <div className="flex justify-between">
+            <div className="w-1/2">
+              <label className="text-white text-sm font-semibold mb-1 block">
+                Profile Picture URL
+              </label>
+              <input
+                onChange={handleImageUploade}
+                type="file"
+                placeholder="Enter profile image URL"
+                className="w-full px-4 py-3 rounded-lg bg-white/15 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              />
+            </div>
+            <div className="border border-teal-300 h-24 w-24 rounded-xl">
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt="Preview"
+                  className="w-24 h-24 object-center rounded-xl"
+                />
+              ) : (
+                <p className="text-center items-center text-teal-200">Your Profile Image</p>
+              )}
+            </div>
           </div>
 
           {/* Username */}
@@ -111,12 +158,22 @@ const SignUp = () => {
           </div>
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full py-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-semibold text-lg transition-all duration-300 shadow-md hover:shadow-amber-700/50"
-          >
-            Sign Up
-          </button>
+          {upLoading ? (
+            <button
+              type="submit"
+              disabled
+              className="w-full py-3 rounded-lg bg-amber-100 text-black font-semibold transition-all duration-300 shadow-md hover:shadow-amber-700/50"
+            >
+              Loading...
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="w-full py-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-semibold  transition-all duration-300 shadow-md hover:shadow-amber-700/50"
+            >
+              Sign Up
+            </button>
+          )}
 
           {/* Divider */}
           <div className="flex items-center gap-3 my-6">

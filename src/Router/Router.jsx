@@ -7,6 +7,8 @@ import Login from "../Authentication/Login/Login";
 import SignUp from "../Authentication/SignUp/SignUp";
 import Forbidden from "../Components/Forbidden/Forbidden";
 import RoomDetails from "../Pages/Rooms/RoomDetails";
+import PrivateRoutes from "../Routes/PrivateRoutes";
+import DashboardLayout from "../Layouts/DashboardLayout/DashboardLayout";
 
 export const router = createBrowserRouter([
     {
@@ -20,7 +22,7 @@ export const router = createBrowserRouter([
             },
             {
                 path:'/rooms/:id',
-                element:<RoomDetails />
+                element:<PrivateRoutes><RoomDetails /></PrivateRoutes>
             },
             {
                 path:'/forbidden',
@@ -43,5 +45,16 @@ export const router = createBrowserRouter([
                 Component: SignUp
             },
         ]
+    },
+    {
+        path:'/dashboard',
+        element: <PrivateRoutes><DashboardLayout/></PrivateRoutes>,
+        children:[
+            {
+                path:'home',
+                element: <p>home</p>
+            }
+        ]
+
     }
 ]);

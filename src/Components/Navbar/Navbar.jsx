@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router";
 import HouseLoop from "../HouseLoop/HouseLoop";
-import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 import useAuth from "../../Hooks/useAuth";
 const Navbar = () => {
   const {user,logOut} = useAuth();
@@ -45,7 +45,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex="-1"
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow text-white"
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow text-black"
           >
             {navLinks}
           </ul>
@@ -60,9 +60,15 @@ const Navbar = () => {
       <div className="navbar-end">
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-            <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-blue-950">
-              pro
+            {
+              user ? 
+            <div className="w-10 h-10 rounded-full flex items-center justify-center">
+              <img src={user.photoURL} alt="" />
+            </div> :
+            <div className="w-10 h-10 rounded-full bg-teal-200 flex items-center justify-center text-blue-950">
+              <FaUser className="w-10 h-10"/>
             </div>
+            }
           </label>
           <ul
             tabIndex={0}

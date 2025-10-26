@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocilaLogin from "../SocialLogin/SocialLogin";
 import useAuth from "../../Hooks/useAuth";
-import Swal from "sweetalert2";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const {
@@ -10,25 +11,33 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signIn } = useAuth();
+  const { signIn ,resetPassword} = useAuth();
+  const location = useLocation();
+  const from = location?.state || '/'
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
 
   const onSubmit = (data) => {
     signIn(data.email, data.password)
       .then((result) => {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Your Account has been Login",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate('/')
+        toast.success('Login Successfully')
         console.log(result.user);
+        navigate(from);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleResetPassword = async() => {
+    if(!email) return toast.error('Please write youremail')
+    try{
+      await resetPassword(email)
+      toast.success('reset successfully')
+
+    }catch(error){
+      console.log(error);
+    }
   };
 
   return (
@@ -38,7 +47,7 @@ const Login = () => {
           Welcome Back 👋
         </h1>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Email */}
           <div>
             <label className="text-white text-sm font-semibold mb-1 block">
@@ -46,6 +55,7 @@ const Login = () => {
             </label>
             <input
               {...register("email", { required: true })}
+              onBlur={e=>setEmail(e.target.value)}
               type="email"
               placeholder="Enter your email"
               className="w-full px-4 py-3 rounded-lg bg-white/15 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-amber-400"
@@ -75,7 +85,6 @@ const Login = () => {
               </p>
             )}
           </div>
-
           {/* Submit Button */}
           <button
             type="submit"
@@ -83,6 +92,15 @@ const Login = () => {
           >
             Log In
           </button>
+        </form>
+          <p className="text-right text-sm text-white/70 mt-2">
+            <button
+              onClick={handleResetPassword}
+              className="text-amber-400 hover:text-amber-300 font-semibold"
+            >
+              Forgot Password?
+            </button>
+          </p>
 
           {/* Divider */}
           <div className="flex items-center gap-3 my-4">
@@ -90,7 +108,6 @@ const Login = () => {
             <span className="text-white text-sm">OR</span>
             <div className="h-px flex-1 bg-white/20"></div>
           </div>
-        </form>
         {/* Social Login Placeholder */}
         <SocilaLogin />
 
