@@ -9,6 +9,10 @@ import Forbidden from "../Components/Forbidden/Forbidden";
 import RoomDetails from "../Pages/Rooms/RoomDetails";
 import PrivateRoutes from "../Routes/PrivateRoutes";
 import DashboardLayout from "../Layouts/DashboardLayout/DashboardLayout";
+import Loading from "../Components/Loading/Loading";
+import Statistics from "../Pages/Dashboard/Common/Statistics/Statistics";
+import AddRoom from "../Pages/Dashboard/Host/AddRoom/AddRoom";
+import MyListings from "../Pages/Dashboard/Host/MyListings/MyListings";
 
 export const router = createBrowserRouter([
     {
@@ -51,9 +55,17 @@ export const router = createBrowserRouter([
         element: <PrivateRoutes><DashboardLayout/></PrivateRoutes>,
         children:[
             {
-                path:'home',
-                element: <p>home</p>
-            }
+                index:true,
+                element: <Statistics/>
+            },
+            {
+                path:'addRoom',
+                element: <AddRoom/>
+            },
+            {
+                path:'my-listings',
+                element: <MyListings/>
+            },
         ]
 
     }
