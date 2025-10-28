@@ -83,7 +83,7 @@ const AddRoomForm = ({
             </div>
           </div>
           <div className="space-y-2">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* rent  */}
               <div>
                 <label className="text-gray-600 font-semibold text-sm">
@@ -98,6 +98,26 @@ const AddRoomForm = ({
                 {errors?.rentAmount?.type === "required" && (
                   <span className="text-red-500 text-sm">
                     Rent Amount is required
+                  </span>
+                )}
+              </div>
+              {/* Price Type (Duration) */}
+              <div>
+                <label className="text-gray-600 font-semibold text-sm">Rent Type *</label>
+                <select
+                {...register("rentType", { required: true })}
+                  name="rentType"
+                  className="select select-success w-full"
+                >
+                  <option value="">Sellect rent type</option>
+                  <option value="day">Per Day</option>
+                  <option value="night">Per Night</option>
+                  <option value="week">Per Week</option>
+                  <option value="month">Per Month</option>
+                </select>
+                  {errors?.rentType?.type === "required" && (
+                  <span className="text-red-500 text-sm">
+                    horentType is required
                   </span>
                 )}
               </div>
@@ -138,7 +158,7 @@ const AddRoomForm = ({
               {/* guest */}
               <div>
                 <label className="text-gray-600 font-semibold text-sm">
-                  Guest *
+                  Guest Room *
                 </label>
                 <input
                   {...register("guest", { required: true })}
@@ -222,7 +242,7 @@ const AddRoomForm = ({
               </div>
             </div>
             <div>
-              {/* types */}
+              {/* type */}
               <div>
                 <label className="text-gray-600 font-semibold text-sm">
                   House Type *
@@ -253,6 +273,7 @@ const AddRoomForm = ({
                   {...register("category", { required: true })}
                   className="select select-success w-full"
                 >
+                  <option value="">Select Category</option>
                   {categories.map((cate) => (
                     <option key={cate.id} value={cate.name}>
                       {cate.name}
@@ -432,7 +453,11 @@ const AddRoomForm = ({
           </div>
         </div>
         {upLoading ? (
-          <button type="submit" disabled className="btn btn-success mt-6 w-full">
+          <button
+            type="submit"
+            disabled
+            className="btn btn-success mt-6 w-full"
+          >
             Add This Room
           </button>
         ) : (

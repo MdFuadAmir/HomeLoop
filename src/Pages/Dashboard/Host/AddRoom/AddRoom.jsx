@@ -5,12 +5,15 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
 
 const AddRoom = () => {
   const { user } = useAuth();
   const [houseImage, setHouseImage] = useState("");
   const [upLoading, setUpLoading] = useState(false);
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   const handleImageUploade = async (e) => {
     const image = e.target.files[0];
@@ -24,6 +27,18 @@ const AddRoom = () => {
     setHouseImage(res.data.data.url);
     setUpLoading(false);
   };
+
+  const { mutateAsync } = useMutation({
+    mutationFn: async (roomdata) => {
+      const { data } = await axiosSecure.post("/rooms", roomdata);
+      return data;
+    },
+    onSuccess: () => {
+      toast.success("Room Add Successfully");
+      navigate('/dashboard/my-listings')
+      console.log("data save successfully");
+    },
+  });
 
   const onSubmit = (data) => {
     if (!houseImage) {
@@ -39,7 +54,7 @@ const AddRoom = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, add it",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         const roomData = {
           ...data,
@@ -52,23 +67,20 @@ const AddRoom = () => {
             nid: data.hostNid,
             image: user?.photoURL,
           },
+          rent: {
+            amount: parseFloat(data.rentAmount),
+            type: data.rentType,
+          },
         };
         delete roomData.hostName;
         delete roomData.hostEmail;
         delete roomData.hostPhone;
         delete roomData.hostNid;
-        console.log(roomData);
+        delete roomData.rentAmount;
+        delete roomData.rentType;
         // post to data base
-        axiosSecure.post("/rooms", roomData).then((res) => {
-          if (res.data.insertedId) {
-            console.log(res.data);
-            Swal.fire({
-              title: "success!",
-              text: "Your product has been added",
-              icon: "success",
-            });
-          }
-        });
+        await mutateAsync(roomData);
+        console.log(roomData);
       }
     });
   };

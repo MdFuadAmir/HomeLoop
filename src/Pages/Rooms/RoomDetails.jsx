@@ -1,10 +1,10 @@
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../Components/Loading/Loading";
-import { FaBath, FaBed, FaUserFriends } from "react-icons/fa";
-import { MdCategory } from "react-icons/md";
+import { FaBath, FaBed, FaBuilding, FaChair, FaHome } from "react-icons/fa";
+import { MdOutlineCategory } from "react-icons/md";
 import useAxios from "../../Hooks/useAxios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
@@ -12,14 +12,6 @@ import "react-date-range/dist/theme/default.css";
 const RoomDetails = () => {
   const { id } = useParams();
   const axiosInstance = useAxios();
-  const [state, setState] = useState([
-    {
-      startDate: new Date(),
-      endDate: null,
-      key: "selection",
-    },
-  ]);
-
   const { data: room = {}, isLoading } = useQuery({
     queryKey: ["room", id],
     queryFn: async () => {
@@ -28,24 +20,44 @@ const RoomDetails = () => {
       return res.data;
     },
   });
+  const [state, setState] = useState([
+  {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  },
+]);
+
+useEffect(() => {
+  if (room?.availableFrom && room?.availableTo) {
+    setState([
+      {
+        startDate: new Date(room.availableFrom),
+        endDate: new Date(room.availableTo),
+        key: "selection",
+      },
+    ]);
+  }
+}, [room]);
+
 
   if (isLoading) {
     return <Loading />;
   }
 
   return (
-    <div className="max-w-5xl rounded-xl mx-auto flex flex-col bg-teal-100 items-center shadow-2xl my-6">
+    <div className="max-w-5xl rounded-xl mx-auto flex flex-col items-center shadow-2xl my-6">
       {/* Image */}
-      <div className="w-full h-80 overflow-hidden bg-teal-100 rounded-t-xl p-4">
+      <div className="w-full h-80 overflow-hidden bg-teal-100 rounded-xl">
         <img
           src={room.image}
           alt={room.title}
-          className="object-cover h-80 w-full border border-dashed border-teal-500 rounded-2xl"
+          className="object-cover h-80 w-full border-teal-500 rounded-2xl"
         />
       </div>
       {/* Info Section */}
       <div className="bg-gray-100 w-full p-4 space-y-4 rounded-b-xl flex flex-col md:flex-row gap-4 justify-between ">
-        <div>
+        <div className="flex-1">
           {/* Title + Location */}
           <div className="mb-2">
             <h1 className="text-2xl font-bold text-teal-700">
@@ -58,39 +70,63 @@ const RoomDetails = () => {
           <div className="flex gap-4 text-gray-600">
             <p>
               <span className="font-semibold text-gray-800">From:</span>{" "}
-              {room.from}
+              {room.availableFrom}
             </p>
             <p>
-              <span className="font-semibold text-gray-800">To:</span> {room.to}
+              <span className="font-semibold text-gray-800">To:</span>{" "}
+              {room.availableTo}
             </p>
           </div>
           {/* Guests & Rooms Info */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-gray-700 mt-4">
             <p className="flex flex-col">
               <span className="font-semibold flex gap-2 items-center">
-                <FaUserFriends className="text-teal-600 text-lg" />{" "}
-                {room.guests}
-              </span>
-              Guests
-            </p>
-            <p className="flex flex-col">
-              <span className="font-semibold flex gap-2 items-center">
-                <FaBed className="text-teal-600 text-lg" /> {room.bedroom}
+                <FaBed className="text-teal-600 text-lg" /> {room.bedrooms}
               </span>
               Bedrooms
             </p>
             <p className="flex flex-col">
               <span className="font-semibold flex gap-2 items-center">
-                <FaBath className="text-teal-600 text-lg" /> {room.bathroom}
+                <FaBath className="text-teal-600 text-lg" /> {room.bathrooms}
               </span>
               Bathrooms
             </p>
+            <p className="flex flex-col">
+              <span className="font-semibold flex gap-2 items-center">
+                <FaChair className="text-teal-600 text-lg" /> {room.guest}
+              </span>
+              Drawing Room
+            </p>
+            <p className="flex flex-col">
+              <span className="font-semibold flex gap-2 items-center">
+                <FaHome className="text-teal-600 text-lg" />{" "}
+                {room.houseType}
+              </span>
+              House Type
+            </p>
+            {room.floorNumber && (
+              <p className="flex flex-col">
+                <span className="font-semibold flex gap-2 items-center">
+                  <FaBuilding className="text-teal-600 text-lg" />{" "}
+                  {room.floorNumber} th
+                </span>
+                Floor Number
+              </p>
+            )}
+
             <p className="flex flex-col items-start">
               <span className="font-semibold flex gap-2 items-center">
-                <MdCategory className="text-teal-600 text-lg" /> {room.category}
+                <MdOutlineCategory className="text-teal-600 text-lg" /> {room.category}
               </span>
               Category
             </p>
+          </div>
+          <div className="mt-4">
+            <h1 className="text-lg font-bold text-teal-700">Facilities</h1>
+
+            {room?.facilities?.map((fac) => (
+              <li key={fac} className="text-gray-600">{fac}</li>
+            ))}
           </div>
           {/* Description */}
           <div className="mt-4">
@@ -103,25 +139,29 @@ const RoomDetails = () => {
             </p>
           </div>
           {/* Host Info */}
-          <div className="flex items-center gap-3 mt-6 border-t border-gray-200 pt-4">
+          <div className="flex items-center gap-3 mt-6 border-t border-teal-600 pt-4">
             <img
               src={room.host?.image || room.host?.name}
               alt={room.host?.name}
               className="w-12 h-12 rounded-full object-cover bg-amber-50"
             />
-            <div>
+            <div className="space-y-1">
               <h3 className="font-semibold text-gray-800">
                 Host: {room.host?.name}
               </h3>
-              <p className="text-sm text-gray-500">{room.host?.email}</p>
+              <p className="text-sm text-gray-600">{room.host?.email}</p>
+              <p className="text-sm text-gray-600">
+                Phone No: {room.host?.phone}
+              </p>
+              <p className="text-sm text-gray-600">Nid No: {room.host?.nid}</p>
             </div>
           </div>
         </div>
 
-        {/*  */}
+        {/* calender */}
         <div className="flex flex-col border p-4 rounded-xl border-teal-600 bg-teal-50 shadow-2xl overflow-x-auto">
           <h2 className="text-emerald-600 text-xl font-semibold">
-            $ {room.price} / night
+            $ {room.rent.amount} / {room.rent.type}
           </h2>
           <div className=" divider divider-info"></div>
           {/* Date Picker */}

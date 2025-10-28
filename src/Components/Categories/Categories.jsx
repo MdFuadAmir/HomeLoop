@@ -60,8 +60,8 @@ const Categories = () => {
           className={`flex-none flex flex-col items-center justify-between border rounded-lg p-2 w-32 cursor-pointer transition
             ${
               category === cat.name
-                ? "bg-teal-300 border-teal-600 text-white shadow-md"
-                : "bg-gray-100 border-teal-200 text-gray-700"
+                ? "bg-teal-200 border-teal-600 border-2 text-white shadow-md"
+                : "bg-gray-100 border-teal-500 text-gray-700"
             }`}
         >
           {/* Icon */}
