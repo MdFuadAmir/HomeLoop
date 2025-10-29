@@ -52,7 +52,7 @@ const Categories = () => {
   };
 
   return (
-    <div className="flex space-x-4 overflow-x-auto">
+    <div className="flex space-x-4 overflow-x-auto rounded">
       {categories.map((cat) => (
         <div
           onClick={() => handleClick(cat.name)}

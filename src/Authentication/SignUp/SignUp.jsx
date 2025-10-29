@@ -41,11 +41,12 @@ const SignUp = () => {
         const user = result.user;
         const userInfo = {
           email: user.email,
-          role: "user",
-          createdAt: new Date().toISOString(),
+          role: "guest",
+          status: "Verified",
+          created_at: new Date().toISOString(),
           last_log_in: new Date().toISOString(),
         };
-        const userRes = await axiosInstance.post("/users", userInfo);
+        const userRes = await axiosInstance.put("/users", userInfo);
         if (userRes.data.success && userRes.data.insertedId) {
           console.log("new user add to database");
           toast.success('Your Account has been created')

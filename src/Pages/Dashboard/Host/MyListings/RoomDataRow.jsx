@@ -1,4 +1,4 @@
-const RoomDataRow = ({ room, index,handleDelete,handleUpdate }) => {
+const RoomDataRow = ({ room, index, handleUpdate, handleDelete }) => {
   return (
     <tr>
       <td>{index + 1}</td>
@@ -15,8 +15,22 @@ const RoomDataRow = ({ room, index,handleDelete,handleUpdate }) => {
       <td>{room.rent.type}</td>
       <td>{room.availableFrom}</td>
       <td>{room.availableTo}</td>
-      <td><button onClick={handleDelete} className="btn btn-xs bg-red-500 text-white">Delete</button></td>
-      <td><button onClick={handleUpdate} className="btn btn-xs bg-green-500 text-white">Update</button></td>
+      <td>
+        <button
+          onClick={() => handleDelete(room)}
+          className="btn btn-xs bg-red-500 text-white"
+        >
+          Delete
+        </button>
+      </td>
+      <td>
+        <button
+          onClick={() => handleUpdate(room)}
+          className="btn btn-xs bg-green-500 text-white"
+        >
+          Update
+        </button>
+      </td>
     </tr>
   );
 };

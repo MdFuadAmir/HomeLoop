@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import { differenceInCalendarDays } from "date-fns";
 
 const RoomDetails = () => {
   const { id } = useParams();
@@ -21,25 +22,31 @@ const RoomDetails = () => {
     },
   });
   const [state, setState] = useState([
-  {
-    startDate: new Date(),
-    endDate: new Date(),
-    key: "selection",
-  },
-]);
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+  useEffect(() => {
+    if (room?.availableFrom && room?.availableTo) {
+      setState([
+        {
+          startDate: new Date(room.availableFrom),
+          endDate: new Date(room.availableTo),
+          key: "selection",
+        },
+      ]);
+    }
+  }, [room]);
 
-useEffect(() => {
-  if (room?.availableFrom && room?.availableTo) {
-    setState([
-      {
-        startDate: new Date(room.availableFrom),
-        endDate: new Date(room.availableTo),
-        key: "selection",
-      },
-    ]);
-  }
-}, [room]);
-
+  const totalDays = parseInt(
+    differenceInCalendarDays(
+      new Date(room.availableTo),
+      new Date(room.availableFrom)
+    )
+  );
+  console.log(totalDays);
 
   if (isLoading) {
     return <Loading />;
@@ -99,8 +106,7 @@ useEffect(() => {
             </p>
             <p className="flex flex-col">
               <span className="font-semibold flex gap-2 items-center">
-                <FaHome className="text-teal-600 text-lg" />{" "}
-                {room.houseType}
+                <FaHome className="text-teal-600 text-lg" /> {room.houseType}
               </span>
               House Type
             </p>
@@ -116,7 +122,8 @@ useEffect(() => {
 
             <p className="flex flex-col items-start">
               <span className="font-semibold flex gap-2 items-center">
-                <MdOutlineCategory className="text-teal-600 text-lg" /> {room.category}
+                <MdOutlineCategory className="text-teal-600 text-lg" />{" "}
+                {room.category}
               </span>
               Category
             </p>
@@ -125,7 +132,9 @@ useEffect(() => {
             <h1 className="text-lg font-bold text-teal-700">Facilities</h1>
 
             {room?.facilities?.map((fac) => (
-              <li key={fac} className="text-gray-600">{fac}</li>
+              <li key={fac} className="text-gray-600">
+                {fac}
+              </li>
             ))}
           </div>
           {/* Description */}
@@ -161,7 +170,8 @@ useEffect(() => {
         {/* calender */}
         <div className="flex flex-col border p-4 rounded-xl border-teal-600 bg-teal-50 shadow-2xl overflow-x-auto">
           <h2 className="text-emerald-600 text-xl font-semibold">
-            $ {room.rent.amount} / {room.rent.type}
+            ৳ {room.rent.amount}{" "}
+            <span className="text-sm">/{room.rent.type}</span>
           </h2>
           <div className=" divider divider-info"></div>
           {/* Date Picker */}
@@ -171,11 +181,34 @@ useEffect(() => {
                 rangeColors={["#0d9488"]}
                 showDateDisplay={false}
                 editableDateInputs={true}
-                onChange={(item) => setState([item.selection])}
+                onChange={(item) => {
+                  console.log(item);
+                  setState([
+                    {
+                      startDate: new Date(room.availableFrom),
+                      endDate: new Date(room.availableTo),
+                      key: "selection",
+                    },
+                  ]);
+                }}
                 moveRangeOnFirstSelection={false}
                 ranges={state}
               />
             </div>
+          </div>
+          <div className="flex items-center justify-between mt-4 border-t-2 border-teal-500">
+            <p className="font-bold text-gray-600">Total Amount</p>
+            {room.rent.type === "month" ? (
+              <h2 className="text-emerald-600 text-xl font-semibold">
+                ৳ {room.rent.amount}
+              </h2>
+            ) : room.rent.type === "day" ? (
+              <h2 className="text-emerald-600 text-xl font-semibold">
+                ৳ {room.rent.amount * totalDays}
+              </h2>
+            ) : (
+              ""
+            )}
           </div>
           {/* Book Button */}
           <div className="mt-6 w-full">

@@ -1,10 +1,13 @@
 import { NavLink, Outlet } from "react-router";
 import HouseLoop from "../../Components/HouseLoop/HouseLoop";
-import { FaSignInAlt, FaSignOutAlt, FaUserCog } from "react-icons/fa";
+import { FaHome, FaList, FaPlus, FaSignInAlt, FaSignOutAlt, FaUserCog } from "react-icons/fa";
 import useAuth from "../../Hooks/useAuth";
+import useRole from "../../Hooks/useRole";
+import MenuItems from "./MenuItems";
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
+  const { role } = useRole();
   const handleCloseDrawer = () => {
     const drawerCheckbox = document.getElementById("my-drawer-2");
     if (drawerCheckbox) drawerCheckbox.checked = false;
@@ -18,6 +21,7 @@ const DashboardLayout = () => {
         console.log(error);
       });
   };
+  console.log(role);
 
   return (
     <div className="drawer lg:drawer-open min-h-screen bg-teal-50">
@@ -61,42 +65,26 @@ const DashboardLayout = () => {
         <ul className="menu bg-teal-700 text-base-content min-h-full w-80 p-4 flex flex-col justify-between h-full">
           <div>
             <HouseLoop />
-            <hr className="my-2 text-teal-400 font-bold border"/>
+            <hr className="my-2 text-teal-400 font-bold border" />
             <div className="space-y-2">
-              <li>
-                <NavLink
-                  to="/dashboard"
-                  end
-                  onClick={handleCloseDrawer}
-                  className={({ isActive }) =>
-                    isActive ? "text-teal-900 bg-teal-600 rounded  font-semibold" : "text-white"
-                  }
-                >
-                  Statistics
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/dashboard/addRoom"
-                  onClick={handleCloseDrawer}
-                  className={({ isActive }) =>
-                    isActive ? "text-teal-900 bg-teal-600 rounded  font-semibold" : "text-white"
-                  }
-                >
-                  Add Rooms
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/dashboard/my-listings"
-                  onClick={handleCloseDrawer}
-                  className={({ isActive }) =>
-                    isActive ? "text-teal-900 bg-teal-600 rounded  font-semibold" : "text-white"
-                  }
-                >
-                  My Listings
-                </NavLink>
-              </li>
+              <MenuItems
+                to={"/dashboard"}
+                labal={"Statistics"}
+                onClick={handleCloseDrawer}
+                icon={FaHome}
+              />
+              <MenuItems
+                to={"/dashboard/addRoom"}
+                labal={"Add Rooms"}
+                onClick={handleCloseDrawer}
+                icon={FaPlus}
+              />
+              <MenuItems
+                to={"/dashboard/my-listings"}
+                labal={"My Listings"}
+                onClick={handleCloseDrawer}
+                icon={FaList}
+              />
             </div>
           </div>
           {/* profile and logout section */}

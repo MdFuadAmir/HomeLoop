@@ -16,11 +16,12 @@ const SocilaLogin = () => {
         const user = result.user;
         const userInfo = {
           email: user.email,
-          role: "user", //default role
+          role: "guest",
+          status:"Verified",
           created_at: new Date().toISOString(),
           last_log_in: new Date().toISOString(),
         };
-        const res = await axiosInstance.post('/users',userInfo);
+        const res = await axiosInstance.put('/users',userInfo);
         console.log('user update info', res.data);
         toast.success('Login Successfully')
         navigate(from);

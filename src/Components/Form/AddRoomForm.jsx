@@ -110,9 +110,7 @@ const AddRoomForm = ({
                   className="select select-success w-full"
                 >
                   <option value="">Sellect rent type</option>
-                  <option value="day">Per Day</option>
                   <option value="night">Per Night</option>
-                  <option value="week">Per Week</option>
                   <option value="month">Per Month</option>
                 </select>
                   {errors?.rentType?.type === "required" && (

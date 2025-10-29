@@ -2,18 +2,61 @@ import { Link, NavLink } from "react-router";
 import HouseLoop from "../HouseLoop/HouseLoop";
 import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 import useAuth from "../../Hooks/useAuth";
-const Navbar = () => {
-  const {user,logOut} = useAuth();
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 
-  const handleLogout = ()=>{
+const Navbar = () => {
+  const { user, logOut } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  const handleLogout = () => {
     logOut()
-    .then(() => {
+      .then(() => {
         console.log("Sign Out");
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+ const handleHostRequest = async () => {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "You want to get host",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, I am",
+  });
+
+  if (result.isConfirmed) {
+    try {
+      const currentUser = {
+        email: user?.email,
+        role: "guest",
+        status: "Requested",
+      };
+      const { data } = await axiosSecure.put(
+        `http://localhost:3000/users`,
+        currentUser
+      );
+      if (!data?.alreadyRequested){
+        toast.success(
+          "Host request sent successfully! Please wait for admin Confermation"
+        )
+      } else {
+        toast("Please wait for admin approval");
+      }
+      console.log("Host request response:", data);
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong!");
+    }
   }
+};
+
+
   const navLinks = (
     <>
       <li>
@@ -57,18 +100,24 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1 text-white">{navLinks}</ul>
       </div>
       {/* navbar end */}
-      <div className="navbar-end">
+      <div className="navbar-end gap-4">
+        <button
+          onClick={handleHostRequest}
+          className="btn btn-sm bg-teal-500 border-none hidden md:block"
+        >
+          I want to Host
+        </button>
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-            {
-              user ? 
-            <div className="w-10 h-10 rounded-full flex items-center justify-center">
-              <img src={user.photoURL} alt="" />
-            </div> :
-            <div className="w-10 h-10 rounded-full bg-teal-200 flex items-center justify-center text-blue-950">
-              <FaUser className="w-10 h-10"/>
-            </div>
-            }
+            {user ? (
+              <div className="w-10 h-10 rounded-full flex items-center justify-center">
+                <img src={user.photoURL} alt="" />
+              </div>
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-teal-200 flex items-center justify-center text-blue-950">
+                <FaUser className="w-10 h-10" />
+              </div>
+            )}
           </label>
           <ul
             tabIndex={0}
@@ -80,16 +129,23 @@ const Navbar = () => {
             <li>
               <Link to="/dashboard">Dashboard</Link>
             </li>
-            {
-              user ? <li>
-                <Link onClick={handleLogout} className="text-red-500 flex items-center gap-2">
+            {user ? (
+              <li>
+                <Link
+                  onClick={handleLogout}
+                  className="text-red-500 flex items-center gap-2"
+                >
                   <FaSignOutAlt /> LogOut
                 </Link>
-              </li> : 
-            <Link to="/login" className="text-green-500 flex items-center gap-2">
-              <FaSignInAlt /> Login
-            </Link>
-            }
+              </li>
+            ) : (
+              <Link
+                to="/login"
+                className="text-green-500 flex items-center gap-2"
+              >
+                <FaSignInAlt /> Login
+              </Link>
+            )}
           </ul>
         </div>
       </div>

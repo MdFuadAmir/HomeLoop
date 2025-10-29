@@ -1,25 +1,58 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import Loading from "../../../../Components/Loading/Loading";
 import useAuth from "../../../../Hooks/useAuth";
 import RoomDataRow from "./RoomDataRow";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 
 const MyListings = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-
-  const { data: rooms = [], isLoading,refetch } = useQuery({
+  const {
+    data: rooms = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["my-listings", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/my-listings/${user?.email}`);
       return res.data;
     },
   });
-//   delete data
-  const handleDelete = () => {
-    console.log("delete");
+  const { mutateAsync } = useMutation({
+    mutationFn: async (_id) => {
+      const { data } = await axiosSecure.delete(`/room/${_id}`);
+      return data;
+    },
+    onSuccess: data =>{
+        console.log(data);
+        toast.success(`Delete Successfully`)
+    }
+  });
+  // 🗑️ Delete handle
+  const handleDelete = (room) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You are about to delete "${room.title}"`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete",
+      background: "#ccfbf1", 
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await mutateAsync(room._id);
+          refetch();
+        } catch (error) {
+          Swal.fire("Error!", "Something went wrong.", error);
+        }
+      }
+    });
   };
-//   update data
+  //   update data
   const handleUpdate = () => {
     console.log("update");
   };

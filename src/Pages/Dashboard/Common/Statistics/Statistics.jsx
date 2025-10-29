@@ -2,7 +2,7 @@
 
 const Statistics = () => {
     return (
-        <div className="p-4 md:p-8 lg:p-12">
+        <div className="p-4">
             Statistics page
         </div>
     );
