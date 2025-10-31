@@ -39,14 +39,15 @@ const SignUp = () => {
     creatUser(data.email, data.password)
       .then(async (result) => {
         const user = result.user;
+        // update user info in database
         const userInfo = {
           email: user.email,
           role: "guest",
-          status: "Verified",
+          status: "verified",
           created_at: new Date().toISOString(),
           last_log_in: new Date().toISOString(),
         };
-        const userRes = await axiosInstance.put("/users", userInfo);
+        const userRes = await axiosInstance.post("/users", userInfo);
         if (userRes.data.success && userRes.data.insertedId) {
           console.log("new user add to database");
           toast.success('Your Account has been created')
@@ -54,8 +55,9 @@ const SignUp = () => {
           console.log("User already exists");
           toast.success('User already exists')
         }
+        // update user profile. in database
         const userProfile = {
-          displayName: data?.username,
+          displayName: data?.name,
           photoURL: profileImage,
         };
         updateUserProfile(userProfile)
@@ -111,7 +113,7 @@ const SignUp = () => {
               Username
             </label>
             <input
-              {...register("username", { required: true })}
+              {...register("name", { required: true })}
               type="text"
               placeholder="Enter your username"
               className="w-full px-4 py-3 rounded-lg bg-white/15 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-amber-400"

@@ -13,6 +13,10 @@ import Loading from "../Components/Loading/Loading";
 import Statistics from "../Pages/Dashboard/Common/Statistics/Statistics";
 import AddRoom from "../Pages/Dashboard/Host/AddRoom/AddRoom";
 import MyListings from "../Pages/Dashboard/Host/MyListings/MyListings";
+import Profile from "../Pages/Dashboard/Common/Profile/Profile";
+import ManageUsers from "../Pages/Dashboard/Admin/ManageUsers/ManageUsers";
+import HostRoutes from "../Routes/HostRoutes";
+import AdminRoutes from "../Routes/AdminRoutes";
 
 export const router = createBrowserRouter([
     {
@@ -54,18 +58,30 @@ export const router = createBrowserRouter([
         path:'/dashboard',
         element: <PrivateRoutes><DashboardLayout/></PrivateRoutes>,
         children:[
+            // common
             {
                 index:true,
                 element: <Statistics/>
             },
             {
+                path:'profile',
+                element: <Profile/>
+            },
+            // host assess
+            {
                 path:'addRoom',
-                element: <AddRoom/>
+                element: <HostRoutes><AddRoom/></HostRoutes>
             },
             {
                 path:'my-listings',
-                element: <MyListings/>
+                element: <HostRoutes><MyListings/></HostRoutes>
             },
+            // admin access
+            {
+                path:'manage-users',
+                element: <AdminRoutes><ManageUsers/></AdminRoutes>
+            },
+            
         ]
 
     }

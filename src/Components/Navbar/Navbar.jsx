@@ -35,7 +35,7 @@ const Navbar = () => {
       const currentUser = {
         email: user?.email,
         role: "guest",
-        status: "Requested",
+        status: "requested",
       };
       const { data } = await axiosSecure.put(
         `http://localhost:3000/users`,

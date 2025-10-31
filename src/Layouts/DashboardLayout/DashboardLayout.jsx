@@ -1,13 +1,17 @@
 import { NavLink, Outlet } from "react-router";
 import HouseLoop from "../../Components/HouseLoop/HouseLoop";
-import { FaHome, FaList, FaPlus, FaSignInAlt, FaSignOutAlt, FaUserCog } from "react-icons/fa";
+import { FaHome, FaSignInAlt, FaSignOutAlt, FaUserCog } from "react-icons/fa";
 import useAuth from "../../Hooks/useAuth";
 import useRole from "../../Hooks/useRole";
-import MenuItems from "./MenuItems";
+import HostMenu from "../../Pages/Dashboard/Menu/HostMenu";
+import MenuItems from "../../Pages/Dashboard/Menu/MenuItems";
+import GuestMenu from "../../Pages/Dashboard/Menu/GuestMenu";
+import AdminMenu from "../../Pages/Dashboard/Menu/AdminMenu";
+import Loading from "../../Components/Loading/Loading";
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
-  const { role } = useRole();
+  const { role, roleLoading } = useRole();
   const handleCloseDrawer = () => {
     const drawerCheckbox = document.getElementById("my-drawer-2");
     if (drawerCheckbox) drawerCheckbox.checked = false;
@@ -21,7 +25,9 @@ const DashboardLayout = () => {
         console.log(error);
       });
   };
-  console.log(role);
+  if (roleLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="drawer lg:drawer-open min-h-screen bg-teal-50">
@@ -73,28 +79,21 @@ const DashboardLayout = () => {
                 onClick={handleCloseDrawer}
                 icon={FaHome}
               />
-              <MenuItems
-                to={"/dashboard/addRoom"}
-                labal={"Add Rooms"}
-                onClick={handleCloseDrawer}
-                icon={FaPlus}
-              />
-              <MenuItems
-                to={"/dashboard/my-listings"}
-                labal={"My Listings"}
-                onClick={handleCloseDrawer}
-                icon={FaList}
-              />
+              {role?.role === "guest" && <GuestMenu />}
+              {role?.role === "host" && <HostMenu />}
+              {role?.role === "admin" && <AdminMenu />}
             </div>
           </div>
           {/* profile and logout section */}
           <div className="bg-teal-800 p-4 rounded-xl shadow-2xl">
             <li>
               <NavLink
-                to="/profile"
+                to="/dashboard/profile"
                 onClick={handleCloseDrawer}
                 className={({ isActive }) =>
-                  isActive ? "text-teal-300 font-semibold" : "text-white"
+                  isActive
+                    ? "text-teal-300 font-semibold bg-teal-700"
+                    : "text-white"
                 }
               >
                 <FaUserCog /> Profile

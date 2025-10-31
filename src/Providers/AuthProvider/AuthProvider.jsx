@@ -11,7 +11,6 @@ import {
   updateProfile,
 } from "firebase/auth";
 import auth from "../../Firebase/firebase.config";
-import axios from "axios";
 
 const AuthProvider = ({ children }) => {
   //states
@@ -42,26 +41,10 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signOut(auth);
   };
-  const savedUser = async (user) => {
-    const currentUser = {
-      email: user?.email,
-      role: "guest",
-      status: "Verified",
-    };
-    const { data } = await axios.put(`http://localhost:3000/users`, currentUser);
-    return data;
-  };
-  // const getToken = async(email)=>{
-  //   const {data} = await axios.post(`http://localhost:3000`,{email},{withCredentials:true})
-  //   return data;
-  // }
+
   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, async(currentUser) => {
+    const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-      if  (currentUser) {
-        //  await getToken(currentUser.email);
-         await savedUser(currentUser);
-      }
       console.log("user in theauth state change", currentUser);
       setLoading(false);
     });
@@ -80,7 +63,9 @@ const AuthProvider = ({ children }) => {
     logOut,
     resetPassword,
   };
-  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

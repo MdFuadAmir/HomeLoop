@@ -14,14 +14,15 @@ const SocilaLogin = () => {
     loginWithGoogle()
       .then(async (result) => {
         const user = result.user;
+         // update user profile info in database
         const userInfo = {
           email: user.email,
           role: "guest",
-          status:"Verified",
+          status:"verified",
           created_at: new Date().toISOString(),
           last_log_in: new Date().toISOString(),
         };
-        const res = await axiosInstance.put('/users',userInfo);
+        const res = await axiosInstance.post('/users',userInfo);
         console.log('user update info', res.data);
         toast.success('Login Successfully')
         navigate(from);
