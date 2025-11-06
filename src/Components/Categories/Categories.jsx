@@ -37,7 +37,7 @@ const Categories = () => {
   // eslint-disable-next-line no-unused-vars
   const [params, setParams] = useSearchParams();
   const category = params.get("category");
-  
+
   const handleClick = (categoryName) => {
     const currentQuery = queryString.parse(location.search);
     const updatedQuery = {
@@ -56,7 +56,7 @@ const Categories = () => {
       {categories.map((cat) => (
         <div
           onClick={() => handleClick(cat.name)}
-          key={cat.id}
+          role="button"
           className={`flex-none flex flex-col items-center justify-between border rounded-lg p-2 w-32 cursor-pointer transition
             ${
               category === cat.name
@@ -67,7 +67,7 @@ const Categories = () => {
           {/* Icon */}
           <span className="text-3xl text-teal-600 mb-2">{cat.icon}</span>
           {/* Category name */}
-          <span className="font-semibold text-sm text-gray-700 text-center line-clamp-2">
+          <span className="font-semibold text-sm text-gray-700 text-center">
             {cat.name}
           </span>
         </div>

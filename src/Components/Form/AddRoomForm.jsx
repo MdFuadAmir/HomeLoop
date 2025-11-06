@@ -109,7 +109,7 @@ const AddRoomForm = ({
                   name="rentType"
                   className="select select-success w-full"
                 >
-                  <option value="">Sellect rent type</option>
+                  <option value="">Select rent type</option>
                   <option value="night">Per Night</option>
                   <option value="month">Per Month</option>
                 </select>
@@ -164,9 +164,9 @@ const AddRoomForm = ({
                   placeholder="3"
                   className="input input-success rounded w-full"
                 />
-                {errors?.floorNumber?.type === "required" && (
+                {errors?.guest?.type === "required" && (
                   <span className="text-red-500 text-sm">
-                    Floor Number is required
+                    guest is required
                   </span>
                 )}
               </div>
@@ -286,6 +286,7 @@ const AddRoomForm = ({
               </div>
             </div>
           </div>
+          {/* facilitys */}
           <div className="mt-6">
             <h3 className="text-gray-700 font-semibold mb-2">
               Additional (Facility & Utility) Information
@@ -374,13 +375,13 @@ const AddRoomForm = ({
                 </label>
                 <input
                   {...register("hostPhone", { required: true })}
-                  type="number"
+                  type="tel"
                   placeholder="01**********"
                   className="input input-success rounded w-full"
                 />
-                {errors?.bedrooms?.type === "required" && (
+                {errors?.hostPhone?.type === "required" && (
                   <span className="text-red-500 text-sm">
-                    Bedrooms is required
+                    hostPhone is required
                   </span>
                 )}
               </div>
@@ -392,8 +393,8 @@ const AddRoomForm = ({
                 </label>
                 <input
                   {...register("hostNid", { required: true })}
-                  type="number"
-                  placeholder="7796274695"
+                  type="tel"
+                  placeholder="01**********"
                   className="input input-success rounded w-full"
                 />
                 {errors?.hostNid?.type === "required" && (
@@ -456,7 +457,7 @@ const AddRoomForm = ({
             disabled
             className="btn btn-success mt-6 w-full"
           >
-            Add This Room
+            <span className="loading loading-spinner"></span>
           </button>
         ) : (
           <button type="submit" className="btn btn-success mt-6 w-full">

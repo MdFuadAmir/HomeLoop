@@ -10,7 +10,7 @@ const AdminRoutes = ({ children }) => {
   if (loading || roleLoading) {
     return <Loading />;
   }
-  if (!user || role?.role !== "admin") {
+  if (!user || role !== "admin") {
     return (
       <Navigate state={{ from: location?.pathname }} to="/forbidden"></Navigate>
     );

@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { Link, NavLink, useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../Components/Loading/Loading";
 import { FaBath, FaBed, FaBuilding, FaChair, FaHome } from "react-icons/fa";
@@ -12,6 +12,7 @@ import { differenceInCalendarDays } from "date-fns";
 
 const RoomDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const axiosInstance = useAxios();
   const { data: room = {}, isLoading } = useQuery({
     queryKey: ["room", id],
@@ -39,19 +40,24 @@ const RoomDetails = () => {
       ]);
     }
   }, [room]);
-
   const totalDays = parseInt(
     differenceInCalendarDays(
       new Date(room.availableTo),
       new Date(room.availableFrom)
     )
   );
-  console.log(totalDays);
+  const totalAmount =
+    room?.rent?.type === "month"
+      ? room?.rent?.amount
+      : room?.rent?.amount * totalDays;
+  console.log(totalAmount);
 
+  const handleReserve = () => {
+    navigate("/payments", { state: { room } });
+  };
   if (isLoading) {
     return <Loading />;
   }
-
   return (
     <div className="max-w-5xl rounded-xl mx-auto flex flex-col items-center shadow-2xl my-6">
       {/* Image */}
@@ -169,10 +175,10 @@ const RoomDetails = () => {
 
         {/* calender */}
         <div className="flex flex-col border p-4 rounded-xl border-teal-600 bg-teal-50 shadow-2xl overflow-x-auto">
-          <h2 className="text-emerald-600 text-xl font-semibold">
-            ৳ {room.rent.amount}{" "}
+          <div className="text-emerald-600 text-xl font-semibold">
+            ৳ {room.rent.amount}
             <span className="text-sm">/{room.rent.type}</span>
-          </h2>
+          </div>
           <div className=" divider divider-info"></div>
           {/* Date Picker */}
           <div className="w-full flex justify-center">
@@ -196,26 +202,26 @@ const RoomDetails = () => {
               />
             </div>
           </div>
-          <div className="flex items-center justify-between mt-4 border-t-2 border-teal-500">
+          <div className="flex items-center justify-between mt-4 border-t-2 border-teal-500 py-6">
             <p className="font-bold text-gray-600">Total Amount</p>
-            {room.rent.type === "month" ? (
-              <h2 className="text-emerald-600 text-xl font-semibold">
-                ৳ {room.rent.amount}
-              </h2>
-            ) : room.rent.type === "day" ? (
-              <h2 className="text-emerald-600 text-xl font-semibold">
-                ৳ {room.rent.amount * totalDays}
-              </h2>
-            ) : (
-              ""
-            )}
+            <p className="text-emerald-600 text-xl font-semibold">
+              ৳ {totalAmount}
+            </p>
           </div>
-          {/* Book Button */}
-          <div className="mt-6 w-full">
-            <button className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-lg shadow-md transition w-full">
-              Reserve
-            </button>
-          </div>
+          {/* payment and book btn  */}
+          <button
+            disabled={room?.booked === true}
+            onClick={handleReserve}
+            // className="w-full btn bg-teal-600 text-white"
+            className={`w-full btn text-white transition-colors duration-300
+    ${
+      room?.booked
+        ? "bg-gray-400 cursor-not-allowed opacity-70"
+        : "bg-teal-600 hover:bg-teal-500"
+    }`}
+          >
+          {room?.booked ? "Already Reserved" : "Reserve"}
+          </button>
         </div>
       </div>
     </div>

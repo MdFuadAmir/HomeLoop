@@ -96,7 +96,7 @@ const ManageUsers = () => {
                       handleRoleChange(user.email, sellected.target.value)
                     }
                     defaultValue="Update Role"
-                    className="select bg-purple-100 text-gray-600"
+                    className="select bg-green-100 text-gray-600"
                   >
                     <option disabled={true}>Update Role</option>
                     <option value="guest">Guest</option>

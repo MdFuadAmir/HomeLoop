@@ -43,9 +43,12 @@ const Rooms = () => {
                     {room.location}
                   </h2>
                   <p className="text-gray-500">
-                    <span className="text-green-500">{room.availableFrom}</span> To <span className="text-red-500">{room.availableTo}</span>
+                    <span className="text-green-500">{room.availableFrom}</span>{" "}
+                    To <span className="text-red-500">{room.availableTo}</span>
                   </p>
-                  <p className="text-amber-500">৳ {room.rent.amount} / {room.rent.type}</p>
+                  <p className="text-amber-500">
+                    ৳ {room?.rent?.amount} / {room?.rent?.type}
+                  </p>
                 </div>
               </div>
             </Link>

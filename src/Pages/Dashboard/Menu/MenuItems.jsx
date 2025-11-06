@@ -13,7 +13,7 @@ const MenuItems = ({ to, labal, icon: Icon, onClick }) => {
             : "text-white"
         }
       >
-        {Icon && <Icon />} {labal}
+        {Icon && <Icon className="text-lg"/>} {labal}
       </NavLink>
     </li>
   );

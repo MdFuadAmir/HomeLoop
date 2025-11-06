@@ -15,7 +15,7 @@ const SignUp = () => {
   } = useForm();
   const { creatUser, updateUserProfile } = useAuth();
     const location = useLocation();
-  const from = location?.state || '/'
+  const from = location?.state?.from || '/'
   const navigate = useNavigate();
   const axiosInstance = useAxios();
   const [profileImage, setProfileImage] = useState();
@@ -77,8 +77,7 @@ const SignUp = () => {
     <div className="min-h-screen flex items-center justify-center">
       <div className="relative bg-white/10 backdrop-blur-xl shadow-2xl rounded-3xl p-6 w-full max-w-md border border-white/20">
         <h1 className="text-4xl font-bold text-center text-white mb-8 tracking-wide drop-shadow-lg">
-          Create Account 🏠
-        </h1>
+          Create Account</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Profile Picture */}
@@ -110,7 +109,7 @@ const SignUp = () => {
           {/* Username */}
           <div>
             <label className="text-white text-sm font-semibold mb-1 block">
-              Username
+              Your Name
             </label>
             <input
               {...register("name", { required: true })}
@@ -118,8 +117,8 @@ const SignUp = () => {
               placeholder="Enter your username"
               className="w-full px-4 py-3 rounded-lg bg-white/15 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
-            {errors.username && (
-              <p className="text-red-400 text-sm mt-1">Username is required</p>
+            {errors.name && (
+              <p className="text-red-400 text-sm mt-1">Name is required</p>
             )}
           </div>
 

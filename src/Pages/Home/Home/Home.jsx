@@ -9,7 +9,6 @@ const Home = () => {
     <div className="p-4">
       <Categories/>
       <Rooms/>
-
     </div>
   );
 };

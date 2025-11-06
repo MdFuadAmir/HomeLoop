@@ -5,14 +5,14 @@ const HostMenu = ({handleCloseDrawer}) => {
     return (
         <div className="space-y-2">
             <MenuItems
-                to={"/dashboard/addRoom"}
-                labal={"Add Rooms"}
+                to="/dashboard/addRoom"
+                labal="Add Rooms"
                 onClick={handleCloseDrawer}
                 icon={FaPlus}
               />
               <MenuItems
-                to={"/dashboard/my-listings"}
-                labal={"My Listings"}
+                to="/dashboard/my-listings"
+                labal="My Listings"
                 onClick={handleCloseDrawer}
                 icon={FaList}
               />   

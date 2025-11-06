@@ -1,6 +1,6 @@
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import useAuth from "../../Hooks/useAuth";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import useAxios from "../../Hooks/useAxios";
 import toast from "react-hot-toast";
 
@@ -8,7 +8,8 @@ const SocilaLogin = () => {
   const { loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const axiosInstance = useAxios();
-  const from = location?.state || '/'
+  const location = useLocation();
+  const from = location?.state?.from || '/'
 
   const haldleGoogleSignIn = () => {
     loginWithGoogle()

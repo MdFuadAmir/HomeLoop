@@ -13,7 +13,7 @@ const Login = () => {
   } = useForm();
   const { signIn ,resetPassword} = useAuth();
   const location = useLocation();
-  const from = location?.state || '/'
+  const from = location?.state?.from || '/'
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
 
@@ -44,8 +44,7 @@ const Login = () => {
     <div className="flex min-h-screen items-center justify-center">
       <div className="relative bg-white/10 backdrop-blur-xl shadow-2xl rounded-3xl p-6 w-full max-w-md border border-white/20">
         <h1 className="text-4xl font-bold text-center text-white mb-8 tracking-wide drop-shadow-lg">
-          Welcome Back 👋
-        </h1>
+          Welcome Back</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Email */}

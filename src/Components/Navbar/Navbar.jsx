@@ -2,61 +2,28 @@ import { Link, NavLink } from "react-router";
 import HouseLoop from "../HouseLoop/HouseLoop";
 import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 import useAuth from "../../Hooks/useAuth";
-import Swal from "sweetalert2";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useHostRequest from "../../Hooks/useHostRequest";
+import Loading from "../Loading/Loading";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
-  const { user, logOut } = useAuth();
-  const axiosSecure = useAxiosSecure();
+  const { user, logOut, loading } = useAuth();
+  const { requestHost } = useHostRequest();
 
   const handleLogout = () => {
     logOut()
       .then(() => {
+        toast.success("Logged out successfully!");
         console.log("Sign Out");
       })
       .catch((error) => {
+        toast.error("Logout failed!");
         console.log(error);
       });
   };
- const handleHostRequest = async () => {
-  const result = await Swal.fire({
-    title: "Are you sure?",
-    text: "You want to get host",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, I am",
-  });
-
-  if (result.isConfirmed) {
-    try {
-      const currentUser = {
-        email: user?.email,
-        role: "guest",
-        status: "requested",
-      };
-      const { data } = await axiosSecure.put(
-        `http://localhost:3000/users`,
-        currentUser
-      );
-      if (!data?.alreadyRequested){
-        toast.success(
-          "Host request sent successfully! Please wait for admin Confermation"
-        )
-      } else {
-        toast("Please wait for admin approval");
-      }
-      console.log("Host request response:", data);
-    } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong!");
-    }
+  if (loading) {
+    return <Loading />;
   }
-};
-
-
   const navLinks = (
     <>
       <li>
@@ -66,7 +33,7 @@ const Navbar = () => {
   );
   return (
     <div className="navbar bg-teal-800 px-4 md:px-10 lg:px-20">
-      {/* navber start */}
+      {/* navber start */} {/* Logo + Mobile Menu */}
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -95,14 +62,15 @@ const Navbar = () => {
         </div>
         <HouseLoop />
       </div>
-      {/* navbar center */}
+      {/* navbar center */} {/* Links */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 text-white">{navLinks}</ul>
       </div>
-      {/* navbar end */}
+      {/* navbar end */} {/* Host Btn + Profile */}
       <div className="navbar-end gap-4">
         <button
-          onClick={handleHostRequest}
+          onClick={requestHost}
+          disabled={!user?.email}
           className="btn btn-sm bg-teal-500 border-none hidden md:block"
         >
           I want to Host
@@ -111,7 +79,11 @@ const Navbar = () => {
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             {user ? (
               <div className="w-10 h-10 rounded-full flex items-center justify-center">
-                <img src={user.photoURL} alt="" />
+                <img
+                  src={user.photoURL || "/profile.png"}
+                  alt="user"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
               </div>
             ) : (
               <div className="w-10 h-10 rounded-full bg-teal-200 flex items-center justify-center text-blue-950">
@@ -124,10 +96,10 @@ const Navbar = () => {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 text-blue-950"
           >
             <li>
-              <Link to="/">Home</Link>
+              <NavLink to="/">Home</NavLink>
             </li>
             <li>
-              <Link to="/dashboard">Dashboard</Link>
+              <Link to={"/dashboard"}>Dashboard</Link>
             </li>
             {user ? (
               <li>

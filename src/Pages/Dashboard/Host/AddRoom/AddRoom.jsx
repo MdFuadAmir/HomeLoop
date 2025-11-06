@@ -95,5 +95,4 @@ const AddRoom = () => {
     </div>
   );
 };
-
 export default AddRoom;

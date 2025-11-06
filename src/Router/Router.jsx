@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../Layouts/RootLayout/RootLayout";
-import ErrorPage from "../Components/ErrorPage/ErrorPage";
 import Home from "../Pages/Home/Home/Home";
 import AuthLayout from "../Layouts/AuthLayout/AuthLayout";
 import Login from "../Authentication/Login/Login";
@@ -9,7 +8,6 @@ import Forbidden from "../Components/Forbidden/Forbidden";
 import RoomDetails from "../Pages/Rooms/RoomDetails";
 import PrivateRoutes from "../Routes/PrivateRoutes";
 import DashboardLayout from "../Layouts/DashboardLayout/DashboardLayout";
-import Loading from "../Components/Loading/Loading";
 import Statistics from "../Pages/Dashboard/Common/Statistics/Statistics";
 import AddRoom from "../Pages/Dashboard/Host/AddRoom/AddRoom";
 import MyListings from "../Pages/Dashboard/Host/MyListings/MyListings";
@@ -17,12 +15,13 @@ import Profile from "../Pages/Dashboard/Common/Profile/Profile";
 import ManageUsers from "../Pages/Dashboard/Admin/ManageUsers/ManageUsers";
 import HostRoutes from "../Routes/HostRoutes";
 import AdminRoutes from "../Routes/AdminRoutes";
+import MyBookings from "../Pages/Dashboard/Guest/MyBookings/MyBookings";
+import Payments from "../Pages/Payments/Payments";
 
 export const router = createBrowserRouter([
     {
         path:'/',
         Component: RootLayout,
-        // errorElement: ErrorPage,
         children:[
             {
                 path:'/',
@@ -36,13 +35,15 @@ export const router = createBrowserRouter([
                 path:'/forbidden',
                 element:<Forbidden />
             },
+            {
+                path:'/payments',
+                element:<PrivateRoutes><Payments/></PrivateRoutes>
+            },
         ]
-
     },
     {
         path:'/',
         Component: AuthLayout,
-        // errorElement: ErrorPage,
         children:[
             {
                 path:'login',
@@ -66,6 +67,11 @@ export const router = createBrowserRouter([
             {
                 path:'profile',
                 element: <Profile/>
+            },
+            // guest
+            {
+                path:'my-bookings',
+                element: <MyBookings/>
             },
             // host assess
             {

@@ -10,7 +10,7 @@ import AdminMenu from "../../Pages/Dashboard/Menu/AdminMenu";
 import Loading from "../../Components/Loading/Loading";
 
 const DashboardLayout = () => {
-  const { user, logOut } = useAuth();
+  const { user, logOut,loading } = useAuth();
   const { role, roleLoading } = useRole();
   const handleCloseDrawer = () => {
     const drawerCheckbox = document.getElementById("my-drawer-2");
@@ -28,7 +28,9 @@ const DashboardLayout = () => {
   if (roleLoading) {
     return <Loading />;
   }
-
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="drawer lg:drawer-open min-h-screen bg-teal-50">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -74,14 +76,14 @@ const DashboardLayout = () => {
             <hr className="my-2 text-teal-400 font-bold border" />
             <div className="space-y-2">
               <MenuItems
-                to={"/dashboard"}
-                labal={"Statistics"}
+                to="/dashboard"
+                labal="Statistics"
                 onClick={handleCloseDrawer}
                 icon={FaHome}
               />
-              {role?.role === "guest" && <GuestMenu />}
-              {role?.role === "host" && <HostMenu />}
-              {role?.role === "admin" && <AdminMenu />}
+              {role === "host" && <HostMenu />}
+              {role === "admin" && <AdminMenu />}
+              <GuestMenu />
             </div>
           </div>
           {/* profile and logout section */}
