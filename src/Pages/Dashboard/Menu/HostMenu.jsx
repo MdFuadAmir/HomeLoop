@@ -1,4 +1,4 @@
-import {FaList,FaPlus,} from "react-icons/fa";
+import {FaList,FaPlus,FaRegCalendarCheck} from "react-icons/fa";
 import MenuItems from "./MenuItems";
 
 const HostMenu = ({handleCloseDrawer}) => {
@@ -15,6 +15,12 @@ const HostMenu = ({handleCloseDrawer}) => {
                 labal="My Listings"
                 onClick={handleCloseDrawer}
                 icon={FaList}
+              />   
+              <MenuItems
+                to="/dashboard/manage-bookings"
+                labal="Manage Bookings"
+                onClick={handleCloseDrawer}
+                icon={FaRegCalendarCheck}
               />   
         </div>
     );

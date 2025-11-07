@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import useAuth from "../../../../Hooks/useAuth";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
-import DashboardTitle from "../../../../Shared/DashboardTitle/DashboardTitle";
-import Loading from "../../../../Components/Loading/Loading";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import DashboardTitle from "../../../../Shared/DashboardTitle/DashboardTitle";
+import Loading from "../../../../Components/Loading/Loading";
 
-const MyBookings = () => {
-  const { user } = useAuth();
+const ManageBookings = () => {
+      const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const {
     data: bookings = [],
@@ -16,7 +16,7 @@ const MyBookings = () => {
   } = useQuery({
     queryKey: ["bookings", user?.email],
     queryFn: async () => {
-      const { data } = await axiosSecure.get(`/bookings/${user?.email}`);
+      const { data } = await axiosSecure.get(`/manage-bookings/${user?.email}`);
       return data;
     },
   });
@@ -57,10 +57,10 @@ const MyBookings = () => {
   if (isLoading) {
     return <Loading />;
   }
-  return (
-    <div>
+    return (
+       <div>
       <DashboardTitle
-        title={"My-Bookings"}
+        title={"Manage Bookings"}
         subTitle={
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae ea sint sunt ad!"
         }
@@ -107,7 +107,7 @@ const MyBookings = () => {
         </table>
       </div>
     </div>
-  );
+    );
 };
 
-export default MyBookings;
+export default ManageBookings;

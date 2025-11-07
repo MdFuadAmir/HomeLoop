@@ -91,6 +91,11 @@ const CheckoutForm = ({ bookingInfo }) => {
       try{
         const {data} = await axiosSecure.post('/bookings',paymentInfo);
         console.log(data);
+
+        axiosSecure.patch(`/room/status/${bookingInfo?._id}`,{
+          status: true,
+        })
+
         toast.success('Payment Seccessfull & your Room Reserved Successfull')
         navigate('/dashboard/my-bookings')
 

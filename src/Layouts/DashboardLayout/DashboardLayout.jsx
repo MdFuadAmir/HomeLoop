@@ -62,7 +62,7 @@ const DashboardLayout = () => {
           <div className="flex-1 px-2">Dashboard</div>
         </div>
         {/* Main content */}
-        <div>
+        <div className="p-4 md:p-8 lg:p-12">
           <Outlet />
         </div>
       </div>
