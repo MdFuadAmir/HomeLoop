@@ -8,6 +8,7 @@ import MenuItems from "../../Pages/Dashboard/Menu/MenuItems";
 import GuestMenu from "../../Pages/Dashboard/Menu/GuestMenu";
 import AdminMenu from "../../Pages/Dashboard/Menu/AdminMenu";
 import Loading from "../../Components/Loading/Loading";
+import toast from "react-hot-toast";
 
 const DashboardLayout = () => {
   const { user, logOut, loading } = useAuth();
@@ -20,10 +21,10 @@ const DashboardLayout = () => {
   const handleLogout = () => {
     logOut()
       .then(() => {
-        console.log("Sign Out");
+        toast.success("Sugn Out !")
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error.message);
       });
   };
 

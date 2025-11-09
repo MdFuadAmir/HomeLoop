@@ -16,7 +16,6 @@ const UpdateRoom = ({ data,refetch,setShowModal }) => {
       refetch();
       setShowModal(false);
     }catch(error){
-      console.log(error);
       toast.error(error.message);
     }
   };

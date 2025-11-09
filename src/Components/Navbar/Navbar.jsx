@@ -17,11 +17,10 @@ const Navbar = () => {
     logOut()
       .then(() => {
         toast.success("Logged out successfully!");
-        setProfileOpen(false); // dropdown close
+        setProfileOpen(false); 
       })
       .catch((error) => {
-        toast.error("Logout failed!");
-        console.log(error);
+        toast.error(error.message);
       });
   };
 
@@ -32,6 +31,16 @@ const Navbar = () => {
       <li>
         <NavLink to="/" onClick={() => setMobileOpen(false)}>
           Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/about-us" onClick={() => setMobileOpen(false)}>
+          About Us
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/contact-us" onClick={() => setMobileOpen(false)}>
+          Contact Us
         </NavLink>
       </li>
     </>

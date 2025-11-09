@@ -1,14 +1,11 @@
 // src/components/Profile.jsx
 import { FaUserCircle } from "react-icons/fa";
 import useAuth from "../../../../Hooks/useAuth";
-import useRole from "../../../../Hooks/useRole";
 import Loading from "../../../../Components/Loading/Loading";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
-import banner from "../../../../assets/banner.png"
 const Profile = () => {
   const { user, loading } = useAuth();
-  const { role } = useRole();
   const axiosSecure = useAxiosSecure();
   const { data: users = [], isLoading } = useQuery({
     queryKey: ["status", user?.email],
@@ -20,16 +17,10 @@ const Profile = () => {
   if (loading && isLoading) {
     return <Loading />;
   }
-  console.log(user);
   return (
     <div className="h-full">
-      {/* Banner */}
-      <div className="h-40 bg-teal-600 w-full flex items-center justify-center">
-        <img src={banner} alt="" className="w-full h-40" />
-      </div>
-
       {/* Profile Card */}
-      <div className="max-w-2xl mx-auto -mt-16 bg-teal-100 shadow-lg rounded-lg p-6 flex flex-col items-center gap-4 relative">
+      <div className="max-w-2xl mx-auto bg-teal-100 shadow-lg rounded-lg p-6 flex flex-col items-center gap-4 relative">
         {user?.photoURL ? (
           <img
             src={user.photoURL}
@@ -44,21 +35,17 @@ const Profile = () => {
           {user?.displayName || "Unnamed User"}
         </h2>
         <p className="text-gray-600">Email: {user?.email || "No Email"}</p>
-        <p className="text-teal-600 font-medium">
+        <p className="text-teal-600 font-medium flex items-center gap-4">
           Role:{" "}
-          {role?.role === "guest" ? (
-            <span className="text-amber-500">{role?.role}</span>
-          ) : role?.role === "host" ? (
-            <span className="text-red-500">{role?.role}</span>
-          ) : role?.role === "admin" ? (
-            <span className="text-yellow-500">{role?.role}</span>
+          {users?.role === "admin" ? (
+            <span className="text-green-500">Admin</span>
+          ) : users?.role === "host" ? (
+            <span className="text-red-500">Host</span>
           ) : (
-            ""
+            <span className="text-purple-500">Guest</span>
           )}
         </p>
-        <p className="text-gray-500">
-          Status: {users?.status}
-        </p>
+        <p className="text-gray-500">Status: {users?.status}</p>
         <p className="text-gray-400 text-sm">User ID: {user?.uid || "N/A"}</p>
 
         <div className="flex gap-4 mt-4">

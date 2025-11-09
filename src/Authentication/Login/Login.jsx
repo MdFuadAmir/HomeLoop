@@ -19,13 +19,12 @@ const Login = () => {
 
   const onSubmit = (data) => {
     signIn(data.email, data.password)
-      .then((result) => {
+      .then(() => {
         toast.success('Login Successfully')
-        console.log(result.user);
         navigate(from);
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error.message);
       });
   };
 
@@ -36,7 +35,7 @@ const Login = () => {
       toast.success('reset successfully')
 
     }catch(error){
-      console.log(error);
+     toast.error(error.message);
     }
   };
 

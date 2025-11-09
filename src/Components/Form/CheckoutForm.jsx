@@ -26,7 +26,7 @@ const CheckoutForm = ({ bookingInfo }) => {
 
   const getClientSecret = async (price) => {
     const { data } = await axiosSecure.post(`/create-payment-intent`, price);
-    console.log("client secret =========>", data.clientSecret);
+    // console.log("client secret =========>", data.clientSecret);
     setClientSecret(data.clientSecret);
   };
 
@@ -52,10 +52,10 @@ const CheckoutForm = ({ bookingInfo }) => {
         email: user?.email || "unknown@example.com",
       },
     });
-    console.log("pay method=======>", paymentMethod);
+    // console.log("pay method=======>", paymentMethod);
 
     if (error) {
-      console.log("[error]", error);
+      // console.log("[error]", error);
       setCardError(error.message);
       setProcessing(false);
       return;
@@ -80,27 +80,26 @@ const CheckoutForm = ({ bookingInfo }) => {
     if (paymentIntent.status === "succeeded") {
       const paymentInfo = {
         ...bookingInfo,
-        roomId:bookingInfo._id,
+        roomId: bookingInfo._id,
         date: new Date(),
         transactionId: paymentIntent.id,
-        paymentMethod
+        paymentMethod,
       };
-      delete paymentInfo._id
-      console.log("pay info",paymentInfo);
+      delete paymentInfo._id;
+      // console.log("pay info",paymentInfo);
       setCardError("");
-      try{
-        const {data} = await axiosSecure.post('/bookings',paymentInfo);
-        console.log(data);
+      try {
+        await axiosSecure.post("/bookings", paymentInfo);
+        // console.log(data);
 
-        axiosSecure.patch(`/room/status/${bookingInfo?._id}`,{
+        axiosSecure.patch(`/room/status/${bookingInfo?._id}`, {
           status: true,
-        })
+        });
 
-        toast.success('Payment Seccessfull & your Room Reserved Successfull')
-        navigate('/dashboard/my-bookings')
-
-      }catch(error){
-        console.log(error);
+        toast.success("Payment Seccessfull & your Room Reserved Successfull");
+        navigate("/dashboard/my-bookings");
+      } catch (error) {
+        toast.error(error.message)
       }
     }
     setProcessing(false);

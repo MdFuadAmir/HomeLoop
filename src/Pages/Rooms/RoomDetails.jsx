@@ -18,7 +18,6 @@ const RoomDetails = () => {
     queryKey: ["room", id],
     queryFn: async () => {
       const res = await axiosInstance.get(`/rooms/${id}`);
-      console.log(res.data);
       return res.data;
     },
   });
@@ -50,8 +49,6 @@ const RoomDetails = () => {
     room?.rent?.type === "month"
       ? room?.rent?.amount
       : room?.rent?.amount * totalDays;
-  console.log(totalAmount);
-
   const handleReserve = () => {
     navigate("/payments", { state: { room } });
   };

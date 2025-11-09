@@ -25,8 +25,7 @@ const MyBookings = () => {
       const { data } = await axiosSecure.delete(`/booking/${_id}`);
       return data;
     },
-    onSuccess: async (data) => {
-      console.log(data);
+    onSuccess: async () => {
       toast.success(`cancle successfully`);
     },
   });

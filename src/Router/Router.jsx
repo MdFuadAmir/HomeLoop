@@ -19,15 +19,27 @@ import MyBookings from "../Pages/Dashboard/Guest/MyBookings/MyBookings";
 import Payments from "../Pages/Payments/Payments";
 import ManageBookings from "../Pages/Dashboard/Host/ManageBookings/ManageBookings";
 import UpdateRoom from "../Pages/Dashboard/Host/MyListings/UpdateRoom";
+import AboutUs from "../Pages/Home/AboutUs/AboutUs";
+import ContactUs from "../Pages/Home/ContactUs/ContactUs";
+import ErrorPage from "../Components/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
     {
         path:'/',
         Component: RootLayout,
+        errorElement: ErrorPage,
         children:[
             {
                 path:'/',
                 element:<Home />
+            },
+            {
+                path:'/about-us',
+                element:<AboutUs />
+            },
+            {
+                path:'/contact-us',
+                element:<ContactUs/>
             },
             {
                 path:'/rooms/:id',
@@ -46,6 +58,7 @@ export const router = createBrowserRouter([
     {
         path:'/',
         Component: AuthLayout,
+        errorElement: ErrorPage,
         children:[
             {
                 path:'login',
@@ -60,6 +73,7 @@ export const router = createBrowserRouter([
     {
         path:'/dashboard',
         element: <PrivateRoutes><DashboardLayout/></PrivateRoutes>,
+        errorElement: ErrorPage,
         children:[
             // common
             {

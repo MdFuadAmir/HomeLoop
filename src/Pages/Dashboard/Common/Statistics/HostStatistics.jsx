@@ -56,16 +56,6 @@ const HostStatistics = () => {
             <p className="font-semibold">{stateDate.totalRooms}</p>
           </div>
         </div>
-        {/* 4 */}
-        {/* <div className="bg-gray-100 shadow-xl p-4 rounded-lg flex items-center justify-between">
-          <div className="bg-blue-500 p-4 rounded-lg">
-            <CgSandClock size={40} color="white" />
-          </div>
-          <div className="text-end">
-            <h3>Host Since</h3>
-            <p className="font-semibold">12</p>
-          </div>
-        </div> */}
       </div>
         {/* chart */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-8">

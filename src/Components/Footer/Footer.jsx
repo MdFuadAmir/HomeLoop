@@ -6,9 +6,9 @@ const Footer = () => {
         <aside>
           <HouseLoop/>
           <p>
-            ACME Industries Ltd.
+            houseLoop Industries Ltd.
             <br />
-            Providing reliable tech since 1992
+            Providing reliable tech since 2025
           </p>
         </aside>
         <nav>

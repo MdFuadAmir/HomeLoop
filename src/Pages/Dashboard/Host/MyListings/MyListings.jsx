@@ -30,8 +30,7 @@ const MyListings = () => {
       const { data } = await axiosSecure.delete(`/room/${_id}`);
       return data;
     },
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       toast.success(`Delete Successfully`);
     },
   });
@@ -131,6 +130,7 @@ const MyListings = () => {
             </div>
           )}
       </div>
+      
     </div>
   );
 };

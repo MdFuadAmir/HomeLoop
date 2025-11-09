@@ -20,19 +20,20 @@ const ManageUsers = () => {
   // Mutation to update role
   const { mutateAsync } = useMutation({
     mutationFn: async ({ email, role }) => {
-      const { data } = await axiosSecure.patch(`/users/update/${email}`,{role});
+      const { data } = await axiosSecure.patch(`/users/update/${email}`, {
+        role,
+      });
       return data;
     },
-    onSuccess: (data) => {
-        refetch();
-        console.log(data);
-        toast.success("user update successfully")
+    onSuccess: () => {
+      refetch();
+      toast.success("user update successfully");
     },
   });
 
-  const handleRoleChange = async (email, role ) => {
+  const handleRoleChange = async (email, role) => {
     try {
-         await mutateAsync({ email, role });
+      await mutateAsync({ email, role });
     } catch (error) {
       console.log(error);
     }

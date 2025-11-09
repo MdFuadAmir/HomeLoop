@@ -49,10 +49,8 @@ const SignUp = () => {
         };
         const userRes = await axiosInstance.post("/users", userInfo);
         if (userRes.data.success && userRes.data.insertedId) {
-          console.log("new user add to database");
           toast.success('Your Account has been created')
         } else {
-          console.log("User already exists");
           toast.success('User already exists')
         }
         // update user profile. in database

@@ -35,8 +35,7 @@ const AddRoom = () => {
     },
     onSuccess: () => {
       toast.success("Room Add Successfully");
-      navigate('/dashboard/my-listings')
-      console.log("data save successfully");
+      navigate('/dashboard/my-listings');
     },
   });
 
@@ -79,7 +78,6 @@ const AddRoom = () => {
         delete roomData.rentType;
         // post to data base
         await mutateAsync(roomData);
-        console.log(roomData);
       }
     });
   };
