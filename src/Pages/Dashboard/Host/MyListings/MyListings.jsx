@@ -5,10 +5,14 @@ import useAuth from "../../../../Hooks/useAuth";
 import RoomDataRow from "./RoomDataRow";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import UpdateRoom from "./UpdateRoom";
 
 const MyListings = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const {
     data: rooms = [],
     isLoading,
@@ -20,15 +24,16 @@ const MyListings = () => {
       return res.data;
     },
   });
+
   const { mutateAsync } = useMutation({
     mutationFn: async (_id) => {
       const { data } = await axiosSecure.delete(`/room/${_id}`);
       return data;
     },
-    onSuccess: data =>{
-        console.log(data);
-        toast.success(`Delete Successfully`)
-    }
+    onSuccess: (data) => {
+      console.log(data);
+      toast.success(`Delete Successfully`);
+    },
   });
   // 🗑️ Delete handle
   const handleDelete = (room) => {
@@ -40,7 +45,7 @@ const MyListings = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete",
-      background: "#ccfbf1", 
+      background: "#ccfbf1",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -53,8 +58,14 @@ const MyListings = () => {
     });
   };
   //   update data
-  const handleUpdate = () => {
-    console.log("update");
+  const handleUpdate = (room) => {
+    setSelectedRoom(room);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedRoom(null);
   };
   if (isLoading) {
     return <Loading />;
@@ -100,6 +111,25 @@ const MyListings = () => {
             ))}
           </tbody>
         </table>
+          {showModal && (
+            <div
+              onClick={closeModal}
+              className="fixed inset-0 bg-linear-to-bl from-teal-950 via-teal-600 to-teal-950  flex justify-center items-center z-50"
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="bg-gray-100 h- p-6 rounded-xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto"
+              >
+                <button
+                  onClick={closeModal}
+                  className="absolute top-2 right-2 text-xl font-bold"
+                >
+                  &times;
+                </button>
+                <UpdateRoom data={selectedRoom} refetch={refetch} setShowModal={setShowModal}/>
+              </div>
+            </div>
+          )}
       </div>
     </div>
   );

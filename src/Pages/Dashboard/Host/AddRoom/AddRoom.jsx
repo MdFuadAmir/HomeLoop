@@ -45,7 +45,6 @@ const AddRoom = () => {
       toast.error("Please upload a product image!");
       return;
     }
-
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be add this product in your shop",

@@ -10,8 +10,9 @@ import AdminMenu from "../../Pages/Dashboard/Menu/AdminMenu";
 import Loading from "../../Components/Loading/Loading";
 
 const DashboardLayout = () => {
-  const { user, logOut,loading } = useAuth();
+  const { user, logOut, loading } = useAuth();
   const { role, roleLoading } = useRole();
+
   const handleCloseDrawer = () => {
     const drawerCheckbox = document.getElementById("my-drawer-2");
     if (drawerCheckbox) drawerCheckbox.checked = false;
@@ -25,6 +26,7 @@ const DashboardLayout = () => {
         console.log(error);
       });
   };
+
   if (roleLoading) {
     return <Loading />;
   }
@@ -70,7 +72,7 @@ const DashboardLayout = () => {
       {/* Drawer sidebar */}
       <div className="drawer-side flex justify-between">
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-        <ul className="menu bg-teal-700 text-base-content min-h-full w-80 p-4 flex flex-col justify-between h-full">
+        <ul className="menu bg-linear-to-bl from-teal-900 via-teal-700 to-teal-900 text-base-content min-h-full w-80 p-4 flex flex-col justify-between h-full">
           <div>
             <HouseLoop />
             <hr className="my-2 text-teal-400 font-bold border" />
@@ -81,9 +83,9 @@ const DashboardLayout = () => {
                 onClick={handleCloseDrawer}
                 icon={FaHome}
               />
-              {role === "host" && <HostMenu />}
-              {role === "admin" && <AdminMenu />}
-              <GuestMenu />
+              {role === "host" && <HostMenu handleCloseDrawer={handleCloseDrawer}/>}
+              {role === "admin" && <AdminMenu handleCloseDrawer={handleCloseDrawer}/>}
+              <GuestMenu handleCloseDrawer={handleCloseDrawer}/>
             </div>
           </div>
           {/* profile and logout section */}

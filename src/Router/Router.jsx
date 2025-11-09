@@ -18,6 +18,7 @@ import AdminRoutes from "../Routes/AdminRoutes";
 import MyBookings from "../Pages/Dashboard/Guest/MyBookings/MyBookings";
 import Payments from "../Pages/Payments/Payments";
 import ManageBookings from "../Pages/Dashboard/Host/ManageBookings/ManageBookings";
+import UpdateRoom from "../Pages/Dashboard/Host/MyListings/UpdateRoom";
 
 export const router = createBrowserRouter([
     {
@@ -86,6 +87,10 @@ export const router = createBrowserRouter([
             {
                 path:'manage-bookings',
                 element: <HostRoutes><ManageBookings/></HostRoutes>
+            },
+            {
+                path:'update-room',
+                element: <HostRoutes><UpdateRoom/></HostRoutes>
             },
             // admin access
             {

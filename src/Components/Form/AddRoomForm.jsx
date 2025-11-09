@@ -30,7 +30,7 @@ const AddRoomForm = ({
   } = useForm();
 
   return (
-    <div className="p-4 md:p-8">
+    <div className="">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="border border-teal-400 rounded-2xl shadow-2xl p-4"
