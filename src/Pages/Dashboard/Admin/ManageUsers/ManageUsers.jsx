@@ -42,7 +42,7 @@ const ManageUsers = () => {
     return <Loading />;
   }
   return (
-    <div className="p-4">
+    <div>
       <div>
         <h2 className="text-2xl font-bold text-teal-600">Manage Your Users</h2>
         <p className="text-sm text-gray-500">

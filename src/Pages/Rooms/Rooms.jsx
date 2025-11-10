@@ -32,23 +32,23 @@ const Rooms = () => {
         ) : (
           rooms.map((room) => (
             <Link key={room._id} to={`/rooms/${room._id}`}>
-              <div className="shadow-2xl hover:shadow-xl bg-blue-50 rounded-xl space-y-2 group">
+              <div className="shadow-2xl hover:shadow-xl rounded-xl space-y-2 group bg-linear-to-br from-teal-200 via-teal-50 to-teal-200">
                 <img
                   src={room?.image}
                   alt="room.png"
                   className="h-52 w-full rounded-xl px-2 pt-2 object-cover"
                 />
                 <div className="p-2 space-y-2">
-                  <h2 className="font-bold text-lg text-gray-700">
+                  <h2 className="font-bold text-md md:text-lg text-gray-700">
                     {room.location}
                   </h2>
-                  <p className="text-gray-500">
+                  <p className="text-gray-500 text-sm ms:text-md">
                     Form :<span className="text-green-500">{room.availableFrom}</span>
                   </p>
-                  <p className="text-gray-500">
+                  <p className="text-gray-500 text-sm ms:text-md">
                     To <span className="text-red-500">{room.availableTo}</span>
                   </p>
-                  <p className="text-amber-500">
+                  <p className="text-amber-500 text-sm ms:text-md">
                     $ {room?.rent?.amount} / {room?.rent?.type}
                   </p>
                 </div>

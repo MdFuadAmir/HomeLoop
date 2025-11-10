@@ -44,7 +44,7 @@ const banners = [
   },
   {
     id: 5,
-    bgColor: "#ef4444",
+    bgColor: "#f87171",
     title: "Short-term Sublets",
     subtitle: "Flexible sublets for weeks or months — perfect for travelers",
     ctaText: "Find Sublets",
@@ -54,9 +54,11 @@ const banners = [
   },
 ];
 
+
+
 const Banner = () => {
   return (
-    <div className="rounded-2xl overflow-hidden shadow-2xl">
+    <div className="rounded-xl overflow-hidden shadow-2xl">
       <Carousel
         showThumbs={false}
         autoPlay

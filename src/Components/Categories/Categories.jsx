@@ -45,7 +45,7 @@ const Categories = () => {
       category: categoryName,
     };
     const url = queryString.stringifyUrl({
-      url: "/",
+      url: "/rooms",
       query: updatedQuery,
     });
     navigate(url);
