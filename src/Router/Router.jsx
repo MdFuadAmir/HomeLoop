@@ -22,6 +22,7 @@ import UpdateRoom from "../Pages/Dashboard/Host/MyListings/UpdateRoom";
 import AboutUs from "../Pages/Home/AboutUs/AboutUs";
 import ContactUs from "../Pages/Home/ContactUs/ContactUs";
 import ErrorPage from "../Components/ErrorPage/ErrorPage";
+import Houses from "../Pages/Houses/Houses";
 
 export const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
             {
                 path:'/',
                 element:<Home />
+            },
+            {
+                path:'/rooms',
+                element:<Houses />
             },
             {
                 path:'/about-us',

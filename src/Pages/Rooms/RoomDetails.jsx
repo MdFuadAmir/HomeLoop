@@ -173,7 +173,7 @@ const RoomDetails = () => {
         {/* calender */}
         <div className="flex flex-col border p-4 rounded-xl border-teal-600 bg-teal-50 shadow-2xl overflow-x-auto">
           <div className="text-emerald-600 text-xl font-semibold">
-            ৳ {room.rent.amount}
+            $ {room.rent.amount}
             <span className="text-sm">/{room.rent.type}</span>
           </div>
           <div className=" divider divider-info"></div>
@@ -202,14 +202,13 @@ const RoomDetails = () => {
           <div className="flex items-center justify-between mt-4 border-t-2 border-teal-500 py-6">
             <p className="font-bold text-gray-600">Total Amount</p>
             <p className="text-emerald-600 text-xl font-semibold">
-              ৳ {totalAmount}
+              $ {totalAmount}
             </p>
           </div>
           {/* payment and book btn  */}
           <button
             disabled={room?.booked === true}
             onClick={handleReserve}
-            // className="w-full btn bg-teal-600 text-white"
             className={`w-full btn text-white transition-colors duration-300
     ${
       room?.booked
@@ -217,7 +216,7 @@ const RoomDetails = () => {
         : "bg-teal-600 hover:bg-teal-500"
     }`}
           >
-          {room?.booked ? "Already Reserved" : "Reserve"}
+            {room?.booked ? "Already Reserved" : "Reserve"}
           </button>
         </div>
       </div>

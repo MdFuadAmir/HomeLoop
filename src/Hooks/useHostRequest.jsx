@@ -16,11 +16,9 @@ const useHostRequest = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, I am",
     });
-
     if (result.isConfirmed) {
       try {
-        const { data } = await axiosSecure.put("/users", {
-          email: user?.email,
+        const { data } = await axiosSecure.patch(`/users/${user?.email}`, {
           status: "requested",
         });
         if (!data?.alreadyRequested) {
@@ -40,3 +38,4 @@ const useHostRequest = () => {
 };
 
 export default useHostRequest;
+

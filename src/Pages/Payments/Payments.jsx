@@ -38,7 +38,7 @@ const Payments = () => {
             {room.location}
           </p>
           <p>
-            <span className="text-black font-bold">Rent:</span> ৳
+            <span className="text-black font-bold">Rent:</span> $
             {room.rent.amount} / {room.rent.type}
           </p>
           <p>

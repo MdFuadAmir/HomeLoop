@@ -1,14 +1,11 @@
-import Categories from "../../../Components/Categories/Categories";
-import Rooms from "../../Rooms/Rooms";
-
+import Banner from "../Banner/Banner";
 
 const Home = () => {
 
 
   return (
     <div className="p-4">
-      <Categories/>
-      <Rooms/>
+      <Banner/>
     </div>
   );
 };

@@ -134,7 +134,7 @@ const CheckoutForm = ({ bookingInfo }) => {
           >
             Pay Now{" "}
             <span className="font-bold text-gray-200">
-              ৳{bookingInfo.totalAmount}
+              ${bookingInfo.totalAmount}
             </span>
           </button>
         )}

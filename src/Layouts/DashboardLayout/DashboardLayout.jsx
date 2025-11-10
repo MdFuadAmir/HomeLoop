@@ -35,7 +35,7 @@ const DashboardLayout = () => {
     return <Loading />;
   }
   return (
-    <div className="drawer lg:drawer-open min-h-screen bg-teal-50">
+    <div className="drawer lg:drawer-open min-h-screen bg-linear-to-br from-teal-200 via-teal-50 to-teal-200">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       {/* Drawer content */}
       <div className="drawer-content flex flex-col">

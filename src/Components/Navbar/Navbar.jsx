@@ -34,6 +34,11 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
+        <NavLink to="/rooms" onClick={() => setMobileOpen(false)}>
+          Rooms
+        </NavLink>
+      </li>
+      <li>
         <NavLink to="/about-us" onClick={() => setMobileOpen(false)}>
           About Us
         </NavLink>
@@ -90,7 +95,6 @@ const Navbar = () => {
         >
           I want to Host
         </button>
-
         {/* Profile dropdown */}
         <div
           className="dropdown dropdown-end"
@@ -98,7 +102,7 @@ const Navbar = () => {
         >
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             {user ? (
-              <div className="w-10 h-10 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-teal-500">
                 <img
                   src={user.photoURL || "/profile.png"}
                   alt="user"
@@ -106,7 +110,7 @@ const Navbar = () => {
                 />
               </div>
             ) : (
-              <div className="w-10 h-10 rounded-full bg-teal-200 flex items-center justify-center text-blue-950">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center text-blue-950 bg-teal-500">
                 <FaUser className="w-10 h-10" />
               </div>
             )}

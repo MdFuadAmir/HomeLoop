@@ -50,8 +50,8 @@ const ManageUsers = () => {
           consequuntur.
         </p>
       </div>
-      <div className="overflow-x-auto mt-6 max-w-4xl mx-auto bg-teal-100 rounded">
-        <table className="table table-zebra">
+      <div className="overflow-x-auto mt-6  mx-auto bg-teal-100 rounded">
+        <table className="table bg-blue-100 table-zebra">
           {/* head */}
           <thead className="bg-teal-700 text-white">
             <tr>
@@ -87,9 +87,14 @@ const ManageUsers = () => {
                   )}
                 </td>
                 <td>
+                    {user.status === "verified" ? 
                   <span className="px-2 py-1 rounded-full bg-green-200 text-green-700">
-                    {user.status}
+                    Verified
+                  </span> :
+                  <span className="px-2 py-1 rounded-full bg-red-200 text-red-700">
+                    Requested
                   </span>
+                    }
                 </td>
                 <td>
                   <select
@@ -97,7 +102,7 @@ const ManageUsers = () => {
                       handleRoleChange(user.email, sellected.target.value)
                     }
                     defaultValue="Update Role"
-                    className="select bg-green-100 text-gray-600"
+                    className="select bg-green-100 text-gray-600 text-xs"
                   >
                     <option disabled={true}>Update Role</option>
                     <option value="guest">Guest</option>
