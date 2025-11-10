@@ -91,7 +91,7 @@ const Navbar = () => {
         <button
           onClick={requestHost}
           disabled={!user?.email}
-          className="btn btn-sm bg-teal-500 border-none hidden md:block"
+          className="btn btn-sm bg-teal-500 border-none"
         >
           I want to Host
         </button>
